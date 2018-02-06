@@ -5,36 +5,24 @@
 
 namespace FriendOrganizer.UI.ViewModel
 {
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Threading.Tasks;
-
-    using Data;
-
-    using Model;
 
     public class MainViewModel : ViewModelBase
     {
-        #region Fields
-
-        private readonly IFriendDataService _friendDataService;
-
-        private Friend _selectedFriend;
-
-        #endregion
-
         #region Properties
 
-        public ObservableCollection<Friend> Friends { get; private set; }
+        public IFriendDetailViewModel FriendDetailViewModel { get; }
+
+        public INavigationViewModel NavigationViewModel { get; }
 
         #endregion
 
         #region Constructors
 
-        public MainViewModel(IFriendDataService friendDataService)
+        public MainViewModel(INavigationViewModel navigationViewModel, IFriendDetailViewModel friendDetailViewModel)
         {
-            _friendDataService = friendDataService;
-            Friends = new ObservableCollection<Friend>();
+            NavigationViewModel = navigationViewModel;
+            FriendDetailViewModel = friendDetailViewModel;
         }
 
         #endregion
@@ -43,28 +31,9 @@ namespace FriendOrganizer.UI.ViewModel
 
         public async Task LoadAsync()
         {
-            List<Friend> friends = await _friendDataService.GetaAllAsync();
-            Friends.Clear();
-
-            foreach (var friend in friends)
-            {
-                Friends.Add(friend);
-            }
+            await NavigationViewModel.LoadAsync();
         }
 
         #endregion
-
-        public Friend SelectedFriend
-        {
-            get
-            {
-                return _selectedFriend;
-            }
-            set
-            {
-                _selectedFriend = value;
-                OnPropertyChanged();
-            }
-        }
     }
 }

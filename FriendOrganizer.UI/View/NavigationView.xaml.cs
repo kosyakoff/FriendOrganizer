@@ -3,17 +3,21 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.UI.View
 {
-    using System.Threading.Tasks;
+    using System.Windows.Controls;
 
-    using Model;
-
-    public interface IFriendDataService
+    /// <summary>
+    /// Interaction logic for NavigationView.xaml
+    /// </summary>
+    public partial class NavigationView : UserControl
     {
-        #region Methods
+        #region Constructors
 
-        Task<Friend> GetaByIdAsync(int friendId);
+        public NavigationView()
+        {
+            InitializeComponent();
+        }
 
         #endregion
     }

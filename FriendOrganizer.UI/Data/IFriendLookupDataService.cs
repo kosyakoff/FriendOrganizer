@@ -5,15 +5,16 @@
 
 namespace FriendOrganizer.UI.Data
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Model;
 
-    public interface IFriendDataService
+    public interface IFriendLookupDataService
     {
         #region Methods
 
-        Task<Friend> GetaByIdAsync(int friendId);
+        Task<IEnumerable<LookupItem>> GetFriendLookupAsync();
 
         #endregion
     }

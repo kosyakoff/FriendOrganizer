@@ -6,14 +6,16 @@
 namespace FriendOrganizer.UI.Data
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using DataAccess;
 
     using Model;
 
-    public class FriendDataService : IFriendDataService
+    public class LookupDataService : IFriendLookupDataService
     {
         #region Fields
 
@@ -23,20 +25,25 @@ namespace FriendOrganizer.UI.Data
 
         #region Constructors
 
-        public FriendDataService(Func<FriendOrganizerDbContext> contextCreator)
+        public LookupDataService(Func<FriendOrganizerDbContext> contextCreater)
         {
-            _contextCreator = contextCreator;
+            _contextCreator = contextCreater;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<Friend> GetaByIdAsync(int friendId)
+        public async Task<IEnumerable<LookupItem>> GetFriendLookupAsync()
         {
-            using (var ctx = _contextCreator())
+            using (FriendOrganizerDbContext ctx = _contextCreator())
             {
-                return await ctx.Friends.AsNoTracking().SingleAsync(f => f.Id == friendId);
+                return await ctx.Friends.AsNoTracking().Select(
+                           friend => new LookupItem
+                           {
+                               Id = friend.Id,
+                               DisplayMember = friend.FirstName + " " + friend.LastName
+                           }).ToListAsync();
             }
         }
 

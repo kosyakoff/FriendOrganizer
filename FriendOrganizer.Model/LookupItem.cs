@@ -3,17 +3,14 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.Model
 {
-    using System.Threading.Tasks;
-
-    using Model;
-
-    public interface IFriendDataService
+    public class LookupItem
     {
-        #region Methods
+        #region Properties
 
-        Task<Friend> GetaByIdAsync(int friendId);
+        public string DisplayMember { get; set; }
+        public int Id { get; set; }
 
         #endregion
     }

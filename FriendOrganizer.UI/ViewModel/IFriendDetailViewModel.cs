@@ -3,17 +3,15 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.UI.ViewModel
 {
     using System.Threading.Tasks;
 
-    using Model;
-
-    public interface IFriendDataService
+    public interface IFriendDetailViewModel
     {
         #region Methods
 
-        Task<Friend> GetaByIdAsync(int friendId);
+        Task LoadAsync(int friendId);
 
         #endregion
     }
