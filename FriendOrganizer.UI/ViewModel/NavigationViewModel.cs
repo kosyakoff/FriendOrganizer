@@ -5,20 +5,27 @@
 
 namespace FriendOrganizer.UI.ViewModel
 {
-    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
 
     using Data;
 
+    using Event;
+
     using Model;
 
-    public class NavigationViewModel : INavigationViewModel
+    using Prism.Events;
+
+    public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {
         #region Fields
 
+        private IEventAggregator _eventAggregator;
+
         private readonly IFriendLookupDataService _friendLookupDataService;
+
+        private LookupItem _selectedFriend;
 
         #endregion
 
@@ -30,8 +37,9 @@ namespace FriendOrganizer.UI.ViewModel
 
         #region Constructors
 
-        public NavigationViewModel(IFriendLookupDataService friendLookupDataService)
+        public NavigationViewModel(IFriendLookupDataService friendLookupDataService, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _friendLookupDataService = friendLookupDataService;
             Friends = new ObservableCollection<LookupItem>();
         }
@@ -43,15 +51,7 @@ namespace FriendOrganizer.UI.ViewModel
         public async Task LoadAsync()
         {
             IEnumerable<LookupItem> lookup = null;
-            try
-            {
-                lookup = await _friendLookupDataService.GetFriendLookupAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            lookup = await _friendLookupDataService.GetFriendLookupAsync();
 
             Friends.Clear();
 
@@ -62,5 +62,22 @@ namespace FriendOrganizer.UI.ViewModel
         }
 
         #endregion
+
+        public LookupItem SelectedFriend
+        {
+            get
+            {
+                return _selectedFriend;
+            }
+            set
+            {
+                _selectedFriend = value;
+                OnPropertyChanged();
+                if (_selectedFriend != null)
+                {
+                    _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Publish(_selectedFriend.Id);
+                }
+            }
+        }
     }
 }
