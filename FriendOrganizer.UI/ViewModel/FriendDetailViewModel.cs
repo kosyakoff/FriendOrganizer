@@ -18,19 +18,34 @@ namespace FriendOrganizer.UI.ViewModel
     using Prism.Commands;
     using Prism.Events;
 
+    using Wrapper;
+
     public class FriendDetailViewModel : ViewModelBase, IFriendDetailViewModel
     {
         #region Fields
 
         private readonly IFriendDataService _dataService;
         private readonly IEventAggregator _eventAggregator;
-        private Friend _friend;
+        private FriendWrapper _friend;
 
         #endregion
 
         #region Properties
 
         public ICommand SaveCommand { get; }
+
+        public FriendWrapper Friend
+        {
+            get
+            {
+                return _friend;
+            }
+            set
+            {
+                _friend = value;
+                OnPropertyChanged();
+            }
+        }
 
         #endregion
 
@@ -50,7 +65,17 @@ namespace FriendOrganizer.UI.ViewModel
 
         public async Task LoadAsync(int friendId)
         {
-            Friend = await _dataService.GetaByIdAsync(friendId);
+            var friend = await _dataService.GetaByIdAsync(friendId);
+            Friend = new FriendWrapper(friend);
+            Friend.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Friend.HasErrors))
+                {
+                    ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
+                }
+            };
+
+            ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
         }
 
         private async void OnOpenFriendDetailView(int friendId)
@@ -60,12 +85,12 @@ namespace FriendOrganizer.UI.ViewModel
 
         private bool OnSaveCanExecute()
         {
-            return true;
+            return Friend != null && !Friend.HasErrors;
         }
 
         private async void OnSaveExecute()
         {
-           await _dataService.SaveAsync(Friend);
+           await _dataService.SaveAsync(Friend.Model);
             _eventAggregator.GetEvent<AfterFriendSaveEvent>().Publish(
                 new AfterFriendSaveEventArgs(Friend.Id,
                     $"{Friend.FirstName} {Friend.LastName}"));
@@ -73,17 +98,5 @@ namespace FriendOrganizer.UI.ViewModel
 
         #endregion
 
-        public Friend Friend
-        {
-            get
-            {
-                return _friend;
-            }
-            set
-            {
-                _friend = value;
-                OnPropertyChanged();
-            }
-        }
     }
 }

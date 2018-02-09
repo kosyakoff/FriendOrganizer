@@ -5,6 +5,7 @@
 
 namespace FriendOrganizer.UI
 {
+    using System;
     using System.Windows;
 
     using Autofac;
@@ -30,5 +31,13 @@ namespace FriendOrganizer.UI
         }
 
         #endregion
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("Unexpected error occured. Please inform the admin." + 
+                            Environment.NewLine + e.Exception.Message, "Unexpected error");
+
+            e.Handled = true;
+        }
     }
 }
