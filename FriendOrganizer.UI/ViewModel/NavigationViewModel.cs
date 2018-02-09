@@ -7,6 +7,7 @@ namespace FriendOrganizer.UI.ViewModel
 {
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using Data;
@@ -21,17 +22,17 @@ namespace FriendOrganizer.UI.ViewModel
     {
         #region Fields
 
-        private IEventAggregator _eventAggregator;
+        private readonly IEventAggregator _eventAggregator;
 
         private readonly IFriendLookupDataService _friendLookupDataService;
 
-        private LookupItem _selectedFriend;
+        private NavigationItemViewModel _selectedFriend;
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<LookupItem> Friends { get; }
+        public ObservableCollection<NavigationItemViewModel> Friends { get; }
 
         #endregion
 
@@ -41,7 +42,14 @@ namespace FriendOrganizer.UI.ViewModel
         {
             _eventAggregator = eventAggregator;
             _friendLookupDataService = friendLookupDataService;
-            Friends = new ObservableCollection<LookupItem>();
+            Friends = new ObservableCollection<NavigationItemViewModel>();
+            _eventAggregator.GetEvent<AfterFriendSaveEvent>().Subscribe(AfterFriendSaved);
+        }
+
+        private void AfterFriendSaved(AfterFriendSaveEventArgs obj)
+        {
+            var lookupItem = Friends.Single(x => x.Id == obj.Id);
+            lookupItem.DisplayMember = obj.DisplayMember;
         }
 
         #endregion
@@ -57,13 +65,13 @@ namespace FriendOrganizer.UI.ViewModel
 
             foreach (LookupItem item in lookup)
             {
-                Friends.Add(item);
+                Friends.Add(new NavigationItemViewModel(item.Id,item.DisplayMember));
             }
         }
 
         #endregion
 
-        public LookupItem SelectedFriend
+        public NavigationItemViewModel SelectedFriend
         {
             get
             {

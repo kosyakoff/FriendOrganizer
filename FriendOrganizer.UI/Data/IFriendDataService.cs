@@ -14,6 +14,7 @@ namespace FriendOrganizer.UI.Data
         #region Methods
 
         Task<Friend> GetaByIdAsync(int friendId);
+        Task SaveAsync(Friend friend);
 
         #endregion
     }
