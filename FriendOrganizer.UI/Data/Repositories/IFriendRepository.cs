@@ -3,11 +3,24 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Event
+namespace FriendOrganizer.UI.Data.Repositories
 {
-    using Prism.Events;
+    using System.Threading.Tasks;
 
-    public class OpenFriendDetailViewEvent : PubSubEvent<int?>
+    using Model;
+
+    public interface IFriendRepository
     {
+        #region Methods
+
+        void Add(Friend friend);
+
+        Task<Friend> GetaByIdAsync(int friendId);
+        bool HasChanges();
+
+        void Remove(Friend friendModel);
+        Task SaveAsync();
+
+        #endregion
     }
 }

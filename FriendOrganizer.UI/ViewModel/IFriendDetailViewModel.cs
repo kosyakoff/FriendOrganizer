@@ -11,8 +11,10 @@ namespace FriendOrganizer.UI.ViewModel
     {
         #region Methods
 
-        Task LoadAsync(int friendId);
+        Task LoadAsync(int? friendId);
 
         #endregion
+
+        bool HasChanges { get; }
     }
 }

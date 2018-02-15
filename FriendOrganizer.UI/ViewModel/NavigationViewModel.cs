@@ -10,7 +10,7 @@ namespace FriendOrganizer.UI.ViewModel
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Data;
+    using Data.Lookups;
 
     using Event;
 
@@ -25,8 +25,6 @@ namespace FriendOrganizer.UI.ViewModel
         private readonly IEventAggregator _eventAggregator;
 
         private readonly IFriendLookupDataService _friendLookupDataService;
-
-        private NavigationItemViewModel _selectedFriend;
 
         #endregion
 
@@ -44,12 +42,7 @@ namespace FriendOrganizer.UI.ViewModel
             _friendLookupDataService = friendLookupDataService;
             Friends = new ObservableCollection<NavigationItemViewModel>();
             _eventAggregator.GetEvent<AfterFriendSaveEvent>().Subscribe(AfterFriendSaved);
-        }
-
-        private void AfterFriendSaved(AfterFriendSaveEventArgs obj)
-        {
-            var lookupItem = Friends.Single(x => x.Id == obj.Id);
-            lookupItem.DisplayMember = obj.DisplayMember;
+            _eventAggregator.GetEvent<AfterFriendDeletedEvent>().Subscribe(AfterFriendDeleted);
         }
 
         #endregion
@@ -65,27 +58,34 @@ namespace FriendOrganizer.UI.ViewModel
 
             foreach (LookupItem item in lookup)
             {
-                Friends.Add(new NavigationItemViewModel(item.Id,item.DisplayMember));
+                Friends.Add(new NavigationItemViewModel(item.Id, item.DisplayMember, _eventAggregator));
+            }
+        }
+
+        private void AfterFriendDeleted(int friendId)
+        {
+            var friend = Friends.FirstOrDefault(x => x.Id == friendId);
+
+            if (friend != null)
+            {
+                Friends.Remove(friend);
+            }
+        }
+
+        private void AfterFriendSaved(AfterFriendSaveEventArgs args)
+        {
+            var lookupItem = Friends.SingleOrDefault(x => x.Id == args.Id);
+
+            if (lookupItem == null)
+            {
+                Friends.Add(new NavigationItemViewModel(args.Id, args.DisplayMember, _eventAggregator));
+            }
+            else
+            {
+                lookupItem.DisplayMember = args.DisplayMember;
             }
         }
 
         #endregion
-
-        public NavigationItemViewModel SelectedFriend
-        {
-            get
-            {
-                return _selectedFriend;
-            }
-            set
-            {
-                _selectedFriend = value;
-                OnPropertyChanged();
-                if (_selectedFriend != null)
-                {
-                    _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Publish(_selectedFriend.Id);
-                }
-            }
-        }
     }
 }

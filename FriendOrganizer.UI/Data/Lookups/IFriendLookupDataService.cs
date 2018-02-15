@@ -3,11 +3,19 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Event
+namespace FriendOrganizer.UI.Data.Lookups
 {
-    using Prism.Events;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
 
-    public class OpenFriendDetailViewEvent : PubSubEvent<int?>
+    using Model;
+
+    public interface IFriendLookupDataService
     {
+        #region Methods
+
+        Task<IEnumerable<LookupItem>> GetFriendLookupAsync();
+
+        #endregion
     }
 }

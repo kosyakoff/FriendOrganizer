@@ -9,18 +9,40 @@
     xmlns:viewModel="clr-namespace:FriendOrganizer.UI.ViewModel"
     Title="FriendOrganizer"
     Width="525"
-    Height="350"
+    Height="450"
     d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
     FontSize="20"
     mc:Ignorable="d">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModel:FriendDetailViewModel}">
+            <view:FriendDetailView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Menu
+            Grid.ColumnSpan="2"
+            FontSize="20">
+            <MenuItem Header="Create">
+                <MenuItem
+                    Command="{Binding CreateNewFriendCommand}"
+                    Header="New Friend" />
+            </MenuItem>
+        </Menu>
         <view:NavigationView
+            Grid.Row="1"
             Grid.Column="0"
             DataContext="{Binding NavigationViewModel}" />
-       <view:FriendDetailView Grid.Column="1" DataContext="{Binding FriendDetailViewModel}"/>
+        <ContentControl
+            Grid.Row="1"
+            Grid.Column="1"
+            Content="{Binding FriendDetailViewModel}" />
     </Grid>
 </Window>

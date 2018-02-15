@@ -3,7 +3,7 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.UI.Data.Repositories
 {
     using System;
     using System.Data.Entity;
@@ -13,41 +13,48 @@ namespace FriendOrganizer.UI.Data
 
     using Model;
 
-    public class FriendDataService : IFriendDataService
+    public class FriendRepository : IFriendRepository
     {
         #region Fields
 
-        private readonly Func<FriendOrganizerDbContext> _contextCreator;
+        private readonly FriendOrganizerDbContext _context;
 
         #endregion
 
         #region Constructors
 
-        public FriendDataService(Func<FriendOrganizerDbContext> contextCreator)
+        public FriendRepository(FriendOrganizerDbContext context)
         {
-            _contextCreator = contextCreator;
+            _context = context;
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<Friend> GetaByIdAsync(int friendId)
+        public void Add(Friend friend)
         {
-            using (var ctx = _contextCreator())
-            {
-                return await ctx.Friends.AsNoTracking().SingleAsync(f => f.Id == friendId);
-            }
+            _context.Friends.Add(friend);
         }
 
-        public async Task SaveAsync(Friend friend)
+        public async Task<Friend> GetaByIdAsync(int friendId)
         {
-            using (var ctx = _contextCreator())
-            {
-                ctx.Friends.Attach(friend);
-                ctx.Entry(friend).State = EntityState.Modified;
-                await ctx.SaveChangesAsync();
-            }
+                return await _context.Friends.SingleAsync(f => f.Id == friendId);
+        }
+
+        public bool HasChanges()
+        {
+            return _context.ChangeTracker.HasChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        public void Remove(Friend friendModel)
+        {
+            _context.Friends.Remove(friendModel);
         }
 
         #endregion

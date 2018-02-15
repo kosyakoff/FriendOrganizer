@@ -8,10 +8,14 @@ namespace FriendOrganizer.UI.Startup
     using Autofac;
 
     using Data;
+    using Data.Lookups;
+    using Data.Repositories;
 
     using DataAccess;
 
     using Prism.Events;
+
+    using View.Services;
 
     using ViewModel;
 
@@ -28,8 +32,9 @@ namespace FriendOrganizer.UI.Startup
             builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
             builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
             builder.RegisterType<LookupDataService>().AsImplementedInterfaces();
-            builder.RegisterType<FriendDataService>().As<IFriendDataService>();
+            builder.RegisterType<FriendRepository>().As<IFriendRepository>();
             builder.RegisterType<FriendOrganizerDbContext>().AsSelf();
+            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
 
             return builder.Build();
         }

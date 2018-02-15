@@ -6,15 +6,48 @@
     xmlns:local="clr-namespace:FriendOrganizer.UI.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:FriendOrganizer.UI.ViewModel"
+    d:DataContext="{d:DesignInstance viewModel:NavigationViewModel}"
     d:DesignHeight="300"
     d:DesignWidth="300"
-    mc:Ignorable="d"
-    d:DataContext="{d:DesignInstance viewModel:NavigationViewModel}">
+    mc:Ignorable="d">
     <Grid>
-        <ListView
-            DisplayMemberPath="DisplayMember"
-            SelectedIndex="0"
-            SelectedItem="{Binding SelectedFriend, Mode=TwoWay}"
-            ItemsSource="{Binding Friends}" />
+        <ScrollViewer
+            HorizontalScrollBarVisibility="Auto"
+            VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Friends}">
+                <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="HorizontalAlignment" Value="Left" />
+                        <Setter Property="Margin" Value="2" />
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button
+                            Command="{Binding OpenFriendDetailCommand}"
+                            Content="{Binding DisplayMember}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid x:Name="grid">
+                                        <ContentPresenter
+                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                            VerticalAlignment="{TemplateBinding VerticalAlignment}" />
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Cursor" Value="Hand" />
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="FontWeight" Value="Normal" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

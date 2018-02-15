@@ -3,18 +3,13 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.UI.View.Services
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Model;
-
-    public interface IFriendLookupDataService
+    public interface IMessageDialogService
     {
         #region Methods
 
-        Task<IEnumerable<LookupItem>> GetFriendLookupAsync();
+        MessageDialogResult ShowOkCancelDialog(string text, string title);
 
         #endregion
     }

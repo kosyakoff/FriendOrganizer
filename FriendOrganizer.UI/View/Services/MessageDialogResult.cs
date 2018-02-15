@@ -3,11 +3,11 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Event
+namespace FriendOrganizer.UI.View.Services
 {
-    using Prism.Events;
-
-    public class OpenFriendDetailViewEvent : PubSubEvent<int?>
+    public enum MessageDialogResult
     {
+        Ok,
+        Cancel
     }
 }

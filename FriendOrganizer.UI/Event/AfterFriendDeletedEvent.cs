@@ -3,19 +3,11 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data
+namespace FriendOrganizer.UI.Event
 {
-    using System.Threading.Tasks;
+    using Prism.Events;
 
-    using Model;
-
-    public interface IFriendDataService
+    public class AfterFriendDeletedEvent : PubSubEvent<int>
     {
-        #region Methods
-
-        Task<Friend> GetaByIdAsync(int friendId);
-        Task SaveAsync(Friend friend);
-
-        #endregion
     }
 }
