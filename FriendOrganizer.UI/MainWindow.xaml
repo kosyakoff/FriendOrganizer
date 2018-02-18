@@ -8,8 +8,9 @@
     xmlns:view="clr-namespace:FriendOrganizer.UI.View"
     xmlns:viewModel="clr-namespace:FriendOrganizer.UI.ViewModel"
     Title="FriendOrganizer"
-    Width="525"
-    Height="450"
+    Width="1005"
+    Height="700"
+    WindowStartupLocation="CenterScreen"
     d:DataContext="{d:DesignInstance viewModel:MainViewModel}"
     FontSize="20"
     mc:Ignorable="d">

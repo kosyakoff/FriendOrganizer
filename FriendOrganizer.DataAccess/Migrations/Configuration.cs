@@ -6,6 +6,7 @@
 namespace FriendOrganizer.DataAccess.Migrations
 {
     using System.Data.Entity.Migrations;
+    using System.Linq;
 
     using Model;
 
@@ -79,6 +80,16 @@ namespace FriendOrganizer.DataAccess.Migrations
                 new ProgrammingLanguage
                 {
                     Name = "Java"
+                });
+
+            context.SaveChanges();
+
+            context.FriendPhoneNumbers.AddOrUpdate(
+                pn => pn.Number,
+                new FriendPhoneNumber
+                {
+                    Number = "+49 12345678",
+                    FriendId = context.Friends.First().Id
                 });
         }
 

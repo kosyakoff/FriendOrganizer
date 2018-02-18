@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:FriendOrganizer.UI.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModel="clr-namespace:FriendOrganizer.UI.ViewModel"
     d:DataContext="{d:DesignInstance viewModel:FriendDetailViewModel}"
@@ -57,11 +56,42 @@
             Content="Favorite Language" />
         <ComboBox
             Grid.Row="7"
-            ItemsSource="{Binding ProgrammingLanguages}"
+            Margin="10,0,10,10"
             DisplayMemberPath="DisplayMember"
-            SelectedValuePath="Id"
-            SelectedValue="{Binding Friend.FavouriteLanguageId,Mode=TwoWay}"
-            Margin="10,0,10,10" />
+            ItemsSource="{Binding ProgrammingLanguages}"
+            SelectedValue="{Binding Friend.FavouriteLanguageId, Mode=TwoWay}"
+            SelectedValuePath="Id" />
+
+        <DockPanel
+            Grid.Row="8"
+            Margin="10">
+            <StackPanel DockPanel.Dock="Right">
+                <Button
+                    Width="125"
+                    Margin="10"
+                    Command="{Binding AddPhoneNumberCommand}"
+                    Content="Add" />
+                <Button
+                    Width="125"
+                    Margin="10"
+                    Command="{Binding RemovePhoneNumberCommand}"
+                    Content="Remove" />
+            </StackPanel>
+            <DataGrid
+                AutoGenerateColumns="False"
+                ItemsSource="{Binding PhoneNumbers}"
+                RowHeaderWidth="0"
+                SelectedItem="{Binding SelectedPhoneNumber, Mode=TwoWay}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="*"
+                        Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        EditingElementStyle="{StaticResource DataGridEditingColumnStyle}"
+                        ElementStyle="{StaticResource DataGridColumnStyle}"
+                        Header="Phone Numbers" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
 
         <StackPanel
             Grid.Row="9"

@@ -5,10 +5,17 @@
 
 namespace FriendOrganizer.Model
 {
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
 
     public class Friend
     {
+        public Friend()
+        {
+            PhoneNumbers = new Collection<FriendPhoneNumber>();
+        }
+
         #region Properties
 
         [StringLength(50)]
@@ -29,6 +36,8 @@ namespace FriendOrganizer.Model
         public int? FavouriteLanguageId { get; set; }
 
         public ProgrammingLanguage FavouriteLanguage { get; set; }
+
+        public ICollection<FriendPhoneNumber> PhoneNumbers { get; set; }
 
         #endregion
     }

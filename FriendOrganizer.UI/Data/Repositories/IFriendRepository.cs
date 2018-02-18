@@ -22,5 +22,7 @@ namespace FriendOrganizer.UI.Data.Repositories
         Task SaveAsync();
 
         #endregion
+
+        void RemovePhoneNumber(FriendPhoneNumber model);
     }
 }
