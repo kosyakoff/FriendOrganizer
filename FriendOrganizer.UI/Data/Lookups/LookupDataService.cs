@@ -15,7 +15,7 @@ namespace FriendOrganizer.UI.Data.Lookups
 
     using Model;
 
-    public class LookupDataService : IFriendLookupDataService
+    public class LookupDataService : IFriendLookupDataService, IProgrammingLanguageLookupDataService
     {
         #region Fields
 
@@ -43,6 +43,19 @@ namespace FriendOrganizer.UI.Data.Lookups
                            {
                                Id = friend.Id,
                                DisplayMember = friend.FirstName + " " + friend.LastName
+                           }).ToListAsync();
+            }
+        }
+
+        public async Task<IEnumerable<LookupItem>> GetProgrammingLanguageLookupAsync()
+        {
+            using (FriendOrganizerDbContext ctx = _contextCreator())
+            {
+                return await ctx.ProgrammingLanguages.AsNoTracking().Select(
+                           programmingLanguage => new LookupItem
+                           {
+                               Id = programmingLanguage.Id,
+                               DisplayMember = programmingLanguage.Name
                            }).ToListAsync();
             }
         }

@@ -23,6 +23,8 @@ namespace FriendOrganizer.DataAccess
         /// </summary>
         public DbSet<Friend> Friends { get; set; }
 
+        public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
+
         #endregion
 
         #region Constructors

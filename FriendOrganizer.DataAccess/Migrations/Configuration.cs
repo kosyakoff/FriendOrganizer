@@ -7,6 +7,8 @@ namespace FriendOrganizer.DataAccess.Migrations
 {
     using System.Data.Entity.Migrations;
 
+    using Model;
+
     internal sealed class Configuration : DbMigrationsConfiguration<FriendOrganizerDbContext>
     {
         #region Constructors
@@ -54,6 +56,29 @@ namespace FriendOrganizer.DataAccess.Migrations
                 {
                     FirstName = "Sara",
                     LastName = "Huber"
+                });
+
+            context.ProgrammingLanguages.AddOrUpdate(
+                pl => pl.Name,
+                new ProgrammingLanguage
+                {
+                    Name = "C#"
+                },
+                new ProgrammingLanguage
+                {
+                    Name = "TypeScript"
+                },
+                new ProgrammingLanguage
+                {
+                    Name = "F#"
+                },
+                new ProgrammingLanguage
+                {
+                    Name = "Swift"
+                },
+                new ProgrammingLanguage
+                {
+                    Name = "Java"
                 });
         }
 

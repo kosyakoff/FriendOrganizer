@@ -67,6 +67,18 @@ namespace FriendOrganizer.UI.Wrapper
             }
         }
 
+        public int? FavouriteLanguageId
+        {
+            get
+            {
+                return GetValue<int?>();
+            }
+            set
+            {
+                SetValue(value);
+            }
+        }
+
         #endregion
 
         #region Methods

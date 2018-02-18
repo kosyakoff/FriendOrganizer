@@ -7,28 +7,15 @@ namespace FriendOrganizer.Model
 {
     using System.ComponentModel.DataAnnotations;
 
-    public class Friend
+    public class ProgrammingLanguage
     {
         #region Properties
 
-        [StringLength(50)]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        [Display(Name = "Имя")]
-        [StringLength(50)]
-        public string FirstName { get; set; }
-
         public int Id { get; set; }
 
+        [Required]
         [StringLength(50)]
-        [Display(Name = "Фамилия")]
-        public string LastName { get; set; }
-
-        public int? FavouriteLanguageId { get; set; }
-
-        public ProgrammingLanguage FavouriteLanguage { get; set; }
+        public string Name { get; set; }
 
         #endregion
     }
