@@ -3,16 +3,18 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data.Repositories
+namespace FriendOrganizer.UI.ViewModel
 {
-    using Model;
+    using System.Threading.Tasks;
 
-    public interface IFriendRepository : IGenericRepository<Friend>
+    public interface IDetailViewModel
     {
         #region Methods
 
-        void RemovePhoneNumber(FriendPhoneNumber model);
+        Task LoadAsync(int? meetingId);
 
         #endregion
+
+        bool HasChanges { get; }
     }
 }

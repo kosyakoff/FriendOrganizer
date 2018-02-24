@@ -18,6 +18,7 @@ namespace FriendOrganizer.UI.ViewModel
 
         private string _displayMember;
         private readonly IEventAggregator _eventAggregator;
+        private readonly string _detailViewModelName;
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace FriendOrganizer.UI.ViewModel
 
         public int Id { get; }
 
-        public ICommand OpenFriendDetailCommand { get; }
+        public ICommand OpenDetailCommand { get; }
 
 
         public string DisplayMember
@@ -45,22 +46,26 @@ namespace FriendOrganizer.UI.ViewModel
 
         #region Constructors
 
-        public NavigationItemViewModel(int id, string displayMember, IEventAggregator eventAggregator)
+        public NavigationItemViewModel(int id, 
+                                       string displayMember, 
+                                       IEventAggregator eventAggregator,
+                                       string detailViewModelName)
         {
             _eventAggregator = eventAggregator;
+            _detailViewModelName = detailViewModelName;
 
             Id = id;
             DisplayMember = displayMember;
-            OpenFriendDetailCommand = new DelegateCommand(OnOpenFriendDetailView);
+            OpenDetailCommand = new DelegateCommand(OnOpenDetailViewExecute);
         }
 
         #endregion
 
         #region Methods
 
-        private void OnOpenFriendDetailView()
+        private void OnOpenDetailViewExecute()
         {
-            _eventAggregator.GetEvent<OpenFriendDetailViewEvent>().Publish(Id);
+            _eventAggregator.GetEvent<OpenDetailViewEvent>().Publish(new OpenDetailViewEventArgs {Id = Id, ViewModelName = _detailViewModelName });
         }
 
         #endregion

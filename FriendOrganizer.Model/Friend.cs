@@ -14,6 +14,7 @@ namespace FriendOrganizer.Model
         public Friend()
         {
             PhoneNumbers = new Collection<FriendPhoneNumber>();
+            Meetings = new Collection<Meeting>();
         }
 
         #region Properties
@@ -38,6 +39,8 @@ namespace FriendOrganizer.Model
         public ProgrammingLanguage FavouriteLanguage { get; set; }
 
         public ICollection<FriendPhoneNumber> PhoneNumbers { get; set; }
+
+        public ICollection<Meeting> Meetings { get; set; }
 
         #endregion
     }

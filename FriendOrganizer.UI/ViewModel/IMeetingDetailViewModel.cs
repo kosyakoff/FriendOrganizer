@@ -3,11 +3,9 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Event
+namespace FriendOrganizer.UI.ViewModel
 {
-    using Prism.Events;
-
-    public class AfterFriendDeletedEvent : PubSubEvent<int>
+    public interface IMeetingDetailViewModel : IDetailViewModel
     {
     }
 }

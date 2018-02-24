@@ -3,15 +3,14 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data.Repositories
+namespace FriendOrganizer.UI.Event
 {
-    using Model;
-
-    public interface IFriendRepository : IGenericRepository<Friend>
+    public class AfterDetailDeletedEventArgs
     {
-        #region Methods
+        #region Properties
 
-        void RemovePhoneNumber(FriendPhoneNumber model);
+        public int Id { get; set; }
+        public string ViewModelName { get; set; }
 
         #endregion
     }

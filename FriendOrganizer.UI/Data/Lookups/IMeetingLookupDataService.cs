@@ -3,15 +3,18 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data.Repositories
+namespace FriendOrganizer.UI.Data.Lookups
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     using Model;
 
-    public interface IFriendRepository : IGenericRepository<Friend>
+    public interface IMeetingLookupDataService
     {
         #region Methods
 
-        void RemovePhoneNumber(FriendPhoneNumber model);
+        Task<IEnumerable<LookupItem>> GetMeetingLookupAsync();
 
         #endregion
     }

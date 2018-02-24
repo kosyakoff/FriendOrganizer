@@ -5,6 +5,7 @@
 
 namespace FriendOrganizer.DataAccess.Migrations
 {
+    using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
@@ -90,6 +91,22 @@ namespace FriendOrganizer.DataAccess.Migrations
                 {
                     Number = "+49 12345678",
                     FriendId = context.Friends.First().Id
+                });
+
+            context.Meetings.AddOrUpdate(
+                m => m.Title,
+                new Meeting
+                {
+                    Title = "Watching Soccer",
+                    DateFrom = new System.DateTime(2018,5,26),
+                    DateTo = new System.DateTime(2018,5,26),
+                    Friends = new List<Friend>
+                    {
+                        context.Friends.Single(f => f.FirstName == "Thomas" &&
+                                                    f.LastName == "Huber"),
+                        context.Friends.Single(f => f.FirstName == "Urs" &&
+                                                    f.LastName == "Meier")
+                    }
                 });
         }
 

@@ -3,16 +3,11 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data.Repositories
+namespace FriendOrganizer.UI.Event
 {
-    using Model;
+    using Prism.Events;
 
-    public interface IFriendRepository : IGenericRepository<Friend>
+    public class AfterDetailDeletedEvent : PubSubEvent<AfterDetailDeletedEventArgs>
     {
-        #region Methods
-
-        void RemovePhoneNumber(FriendPhoneNumber model);
-
-        #endregion
     }
 }

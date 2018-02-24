@@ -5,16 +5,8 @@
 
 namespace FriendOrganizer.UI.ViewModel
 {
-    using System.Threading.Tasks;
-
-    public interface IFriendDetailViewModel
+    public interface IFriendDetailViewModel : IDetailViewModel
     {
-        #region Methods
 
-        Task LoadAsync(int? friendId);
-
-        #endregion
-
-        bool HasChanges { get; }
     }
 }

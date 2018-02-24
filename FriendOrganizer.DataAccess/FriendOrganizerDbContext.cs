@@ -26,6 +26,8 @@ namespace FriendOrganizer.DataAccess
         public DbSet<ProgrammingLanguage> ProgrammingLanguages { get; set; }
 
         public DbSet<FriendPhoneNumber> FriendPhoneNumbers { get; set; }
+
+        public DbSet<Meeting> Meetings { get; set; }
         #endregion
 
         #region Constructors
