@@ -7,6 +7,7 @@ namespace FriendOrganizer.UI.Data.Repositories
 {
     using System;
     using System.Data.Entity;
+    using System.Linq;
     using System.Threading.Tasks;
 
     using DataAccess;
@@ -33,10 +34,17 @@ namespace FriendOrganizer.UI.Data.Repositories
                            .SingleAsync(f => f.Id == friendId);
         }
 
-
         public void RemovePhoneNumber(FriendPhoneNumber model)
         {
             Context.FriendPhoneNumbers.Remove(model);
+        }
+
+        public async Task<bool> HasMeetingsAsync(int firendId)
+        {
+            return await Context.Meetings.
+                       AsNoTracking().
+                       Include(m => m.Friends).
+                       AnyAsync(m => m.Friends.Any(f => f.Id == firendId));
         }
 
         #endregion

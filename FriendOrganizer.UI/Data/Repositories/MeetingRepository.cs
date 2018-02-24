@@ -5,6 +5,7 @@
 
 namespace FriendOrganizer.UI.Data.Repositories
 {
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using DataAccess;
 
@@ -23,6 +24,11 @@ namespace FriendOrganizer.UI.Data.Repositories
         public override async Task<Meeting> GetaByIdAsync(int id)
         {
            return await Context.Meetings.Include(m => m.Friends).SingleAsync(m => m.Id == id);
+        }
+
+        public async Task<List<Friend>> GetAllFriendsAsync()
+        {
+            return await Context.Set<Friend>().ToListAsync();
         }
 
         #endregion

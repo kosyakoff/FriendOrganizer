@@ -11,6 +11,8 @@ namespace FriendOrganizer.UI.View.Services
 
         MessageDialogResult ShowOkCancelDialog(string text, string title);
 
+        void ShowInfoDialog(string text);
+
         #endregion
     }
 }
