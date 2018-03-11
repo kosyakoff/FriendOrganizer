@@ -34,6 +34,9 @@ namespace FriendOrganizer.Model
         [Display(Name = "Фамилия")]
         public string LastName { get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         public int? FavouriteLanguageId { get; set; }
 
         public ProgrammingLanguage FavouriteLanguage { get; set; }

@@ -5,9 +5,11 @@
 
 namespace FriendOrganizer.UI.ViewModel
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.Data.Entity.Infrastructure;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Windows.Input;
@@ -144,12 +146,17 @@ namespace FriendOrganizer.UI.ViewModel
 
         protected override async void OnSaveExecute()
         {
-            await _friendRepository.SaveAsync();
-            HasChanges = _friendRepository.HasChanges();
+            await SaveWithOptimisticConcurrencyAsync(
+                _friendRepository.SaveAsync,
+                () =>
+                {
 
-            Id = Friend.Id;
+                    HasChanges = _friendRepository.HasChanges();
 
-            RaiseDetailSavedEvent(modelId: Friend.Id, displayMember: $"{Friend.FirstName} {Friend.LastName}");
+                    Id = Friend.Id;
+
+                    RaiseDetailSavedEvent(modelId: Friend.Id, displayMember: $"{Friend.FirstName} {Friend.LastName}");
+                });
         }
 
         private Friend CreateNewFriend()
