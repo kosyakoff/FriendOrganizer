@@ -5,22 +5,12 @@
 
 namespace FriendOrganizer.UI.Data.Repositories
 {
-    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     using Model;
 
-    public interface IGenericRepository<T>
+    public interface IProgrammingLanguageRepository : IGenericRepository<ProgrammingLanguage>
     {
-        #region Methods
-
-        void Add(T model);
-        Task<T> GetaByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        bool HasChanges();
-        void Remove(T model);
-        Task SaveAsync();
-
-        #endregion
+        Task<bool> IsReferencedByFriendAsync(int programmingLanguageId);
     }
 }

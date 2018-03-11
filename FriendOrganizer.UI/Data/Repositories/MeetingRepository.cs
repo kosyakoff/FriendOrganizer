@@ -11,6 +11,8 @@ namespace FriendOrganizer.UI.Data.Repositories
 
     using Model;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
+    using System.Linq;
 
     public class MeetingRepository : GenericRepository<Meeting, FriendOrganizerDbContext>, IMeetingRepository
     {
@@ -29,6 +31,14 @@ namespace FriendOrganizer.UI.Data.Repositories
         public async Task<List<Friend>> GetAllFriendsAsync()
         {
             return await Context.Set<Friend>().ToListAsync();
+        }
+
+        public async Task ReloadFriendAsync(int friendId)
+        {
+            DbEntityEntry<Friend> dbEntityEntry = 
+                Context.ChangeTracker.Entries<Friend>().SingleOrDefault(db => db.Entity.Id == friendId);
+
+            await dbEntityEntry?.ReloadAsync();
         }
 
         #endregion

@@ -5,6 +5,7 @@
 
 namespace FriendOrganizer.UI.Data.Repositories
 {
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Threading.Tasks;
 
@@ -36,6 +37,11 @@ namespace FriendOrganizer.UI.Data.Repositories
         public virtual async Task<TEntity> GetaByIdAsync(int id)
         {
             return await Context.Set<TEntity>().FindAsync(id);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+            return await Context.Set<TEntity>().ToListAsync();
         }
 
         public bool HasChanges()

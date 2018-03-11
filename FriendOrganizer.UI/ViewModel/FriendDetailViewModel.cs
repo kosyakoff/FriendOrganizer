@@ -15,6 +15,8 @@ namespace FriendOrganizer.UI.ViewModel
     using Data.Lookups;
     using Data.Repositories;
 
+    using Event;
+
     using Model;
 
     using Prism.Commands;
@@ -28,7 +30,6 @@ namespace FriendOrganizer.UI.ViewModel
     {
         #region Fields
 
-        private readonly IMessageDialogService _dialogService;
         private FriendWrapper _friend;
 
         private readonly IFriendRepository _friendRepository;
@@ -83,12 +84,12 @@ namespace FriendOrganizer.UI.ViewModel
             IEventAggregator eventAggregator,
             IMessageDialogService dialogService,
             IProgrammingLanguageLookupDataService programmingLanguageLookupDataService)
-            : base(eventAggregator)
+            : base(eventAggregator, dialogService)
         {
             _friendRepository = friendRepository;
             _programmingLanguageLookupDataService = programmingLanguageLookupDataService;
 
-            _dialogService = dialogService;
+            eventAggregator.GetEvent<AfterCollectionSavedEvent>().Subscribe(HandleOnAfterCollectionSaved);
 
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
             RemovePhoneNumberCommand = new DelegateCommand(OnRemovePhoneNumberExecute, OnRemovePhoneNumberCanExecute);
@@ -101,9 +102,12 @@ namespace FriendOrganizer.UI.ViewModel
 
         #region Methods
 
-        public override async Task LoadAsync(int? meetingId)
+        public override async Task LoadAsync(int friendId)
         {
-            var friend = meetingId.HasValue ? await _friendRepository.GetaByIdAsync(meetingId.Value) : CreateNewFriend();
+            var friend = friendId > 0 
+                             ? await _friendRepository.GetaByIdAsync(friendId) 
+                             : CreateNewFriend();
+            Id = friendId;
 
             InitalizeFriend(friend);
 
@@ -116,11 +120,11 @@ namespace FriendOrganizer.UI.ViewModel
         {
             if (await _friendRepository.HasMeetingsAsync(firendId: Friend.Id))
             {
-                _dialogService.ShowInfoDialog($"{Friend.FirstName} {Friend.LastName} can't be deleted, as this friend is part of at least one meeting");
+                MessageDialogService.ShowInfoDialog($"{Friend.FirstName} {Friend.LastName} can't be deleted, as this friend is part of at least one meeting");
                 return;
             }
 
-            var result = _dialogService.ShowOkCancelDialog($"Do you realy want to delete {Friend.FirstName} {Friend.LastName}?", "Question");
+            var result = MessageDialogService.ShowOkCancelDialog($"Do you realy want to delete {Friend.FirstName} {Friend.LastName}?", "Question");
 
             if (result == MessageDialogResult.Cancel)
             {
@@ -142,6 +146,8 @@ namespace FriendOrganizer.UI.ViewModel
         {
             await _friendRepository.SaveAsync();
             HasChanges = _friendRepository.HasChanges();
+
+            Id = Friend.Id;
 
             RaiseDetailSavedEvent(modelId: Friend.Id, displayMember: $"{Friend.FirstName} {Friend.LastName}");
         }
@@ -167,6 +173,14 @@ namespace FriendOrganizer.UI.ViewModel
             }
         }
 
+        private async void HandleOnAfterCollectionSaved(AfterCollectionSavedEventArgs args)
+        {
+            if (args.ViewModelName == nameof(ProgrammingLanguageDetailViewModel))
+            {
+                await LoadProgrammingLanguageLookupsAsync();
+            }
+        }
+
         private void InitalizeFriend(Friend friend)
         {
             Friend = new FriendWrapper(friend);
@@ -181,6 +195,11 @@ namespace FriendOrganizer.UI.ViewModel
                 {
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
                 }
+
+                if (e.PropertyName == nameof(Friend.FirstName) || e.PropertyName == nameof(Friend.LastName))
+                {
+                    SetTitle();
+                }
             };
 
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
@@ -190,6 +209,13 @@ namespace FriendOrganizer.UI.ViewModel
                 //Used to trigger validation
                 Friend.FirstName = string.Empty;
             }
+
+            SetTitle();
+        }
+
+        private void SetTitle()
+        {
+            Title = $"{Friend.FirstName} {Friend.LastName}";
         }
 
         private void InitializeFriendPhoneNumbers(ICollection<FriendPhoneNumber> friendPhoneNumbers)

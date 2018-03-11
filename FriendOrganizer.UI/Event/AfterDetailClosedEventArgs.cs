@@ -3,23 +3,14 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Data.Repositories
+namespace FriendOrganizer.UI.Event
 {
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-
-    using Model;
-
-    public interface IGenericRepository<T>
+    public class AfterDetailClosedEventArgs
     {
-        #region Methods
+        #region Properties
 
-        void Add(T model);
-        Task<T> GetaByIdAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        bool HasChanges();
-        void Remove(T model);
-        Task SaveAsync();
+        public int Id { get; set; }
+        public string ViewModelName { get; set; }
 
         #endregion
     }

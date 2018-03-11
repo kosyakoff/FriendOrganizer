@@ -5,13 +5,9 @@
 
 namespace FriendOrganizer.UI.Event
 {
-    public class OpenDetailViewEventArgs
+    using Prism.Events;
+
+    public class AfterCollectionSavedEvent : PubSubEvent<AfterCollectionSavedEventArgs>
     {
-        #region Properties
-
-        public int Id { get; set; }
-        public string ViewModelName { get; set; }
-
-        #endregion
     }
 }

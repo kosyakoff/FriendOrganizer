@@ -3,15 +3,9 @@
 // Author: 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------
 
-namespace FriendOrganizer.UI.Event
+namespace FriendOrganizer.UI.ViewModel
 {
-    public class OpenDetailViewEventArgs
+    public interface IProgrammingLanguageDetailViewModel : IDetailViewModel
     {
-        #region Properties
-
-        public int Id { get; set; }
-        public string ViewModelName { get; set; }
-
-        #endregion
     }
 }
