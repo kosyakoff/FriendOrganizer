@@ -1,25 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// Copyright ElcomPlus LLC. All rights reserved.
+// Author: 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 namespace FriendOrganizer.UI.View.Services
 {
+    using System.Threading.Tasks;
     using System.Windows;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
 
     public class MessageDialogService : IMessageDialogService
     {
-        public MessageDialogResult ShowOkCancelDialog(string text, string title)
+        private MetroWindow MetroWindow
         {
-            MessageBoxResult result = MessageBox.Show(text, title, MessageBoxButton.OKCancel);
-
-            return result == MessageBoxResult.OK ? MessageDialogResult.Ok : MessageDialogResult.Cancel;
+            get
+            {
+                return (MetroWindow)Application.Current.MainWindow;
+            }
         }
 
-        public void ShowInfoDialog(string text)
+        #region Methods
+
+        public async Task ShowInfoDialogAsync(string text)
         {
-            MessageBox.Show(text, "Info");
+            await MetroWindow.ShowMessageAsync("Info", text);
         }
+
+        public async Task<MessageDialogResult> ShowOkCancelDialogAsync(string text, string title)
+        {
+            var result = await MetroWindow.ShowMessageAsync(title, text, MessageDialogStyle.AffirmativeAndNegative);
+
+            return result ==  MahApps.Metro.Controls.Dialogs.MessageDialogResult.Affirmative ? MessageDialogResult.Ok : MessageDialogResult.Cancel;
+        }
+
+        #endregion
     }
 }

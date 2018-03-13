@@ -100,7 +100,7 @@ namespace FriendOrganizer.UI.ViewModel
                 }
                 catch
                 {
-                    _messageDialogService.ShowInfoDialog("Could not load entiry");
+                    await _messageDialogService.ShowInfoDialogAsync("Could not load entiry");
                     await NavigationViewModel.LoadAsync();
                     return;
                 }

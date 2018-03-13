@@ -5,13 +5,15 @@
 
 namespace FriendOrganizer.UI.View.Services
 {
+    using System.Threading.Tasks;
+
     public interface IMessageDialogService
     {
         #region Methods
 
-        MessageDialogResult ShowOkCancelDialog(string text, string title);
+        Task<MessageDialogResult> ShowOkCancelDialogAsync(string text, string title);
 
-        void ShowInfoDialog(string text);
+        Task ShowInfoDialogAsync(string text);
 
         #endregion
     }

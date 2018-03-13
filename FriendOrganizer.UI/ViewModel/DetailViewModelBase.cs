@@ -105,11 +105,11 @@ namespace FriendOrganizer.UI.ViewModel
 
         protected abstract void OnSaveExecute();
 
-        protected virtual void OnCloseDetailViewExecute()
+        protected virtual async void OnCloseDetailViewExecute()
         {
             if (HasChanges)
             {
-                MessageDialogResult result = MessageDialogService.ShowOkCancelDialog("You've made changes. Close this item?", "Question");
+                MessageDialogResult result = await MessageDialogService.ShowOkCancelDialogAsync("You've made changes. Close this item?", "Question");
 
                 if (result == MessageDialogResult.Cancel)
                 {
@@ -166,12 +166,12 @@ namespace FriendOrganizer.UI.ViewModel
                 var databaseValues = e.Entries.Single().GetDatabaseValues();
                 if (databaseValues == null)
                 {
-                    MessageDialogService.ShowInfoDialog("The entity has been deleted by another user");
+                    await MessageDialogService.ShowInfoDialogAsync("The entity has been deleted by another user");
                     RaiseDetailDeletedEvent(Id);
                     return;
                 }
 
-                var result = MessageDialogService.ShowOkCancelDialog(
+                var result = await MessageDialogService.ShowOkCancelDialogAsync(
                     "The entity has been changed. Click save to save anyway, click Cancel to reload entity form database",
                     "Question");
 

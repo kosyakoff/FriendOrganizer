@@ -20,7 +20,8 @@
         <DataTemplate x:Key="NaviItemTemplate">
             <Button
                 Command="{Binding OpenDetailCommand}"
-                Content="{Binding DisplayMember}">
+                Content="{Binding DisplayMember}"
+                FontSize="16">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Grid x:Name="grid">
@@ -54,7 +55,8 @@
                 <ItemsControl
                     ItemContainerStyle="{StaticResource NaviItemContainerStyle}"
                     ItemTemplate="{StaticResource NaviItemTemplate}"
-                    ItemsSource="{Binding Friends}" />
+                    ItemsSource="{Binding Friends}" 
+                    Margin="10"/>
             </ScrollViewer>
         </GroupBox>
         <GroupBox
@@ -66,7 +68,8 @@
                 <ItemsControl
                     ItemContainerStyle="{StaticResource NaviItemContainerStyle}"
                     ItemTemplate="{StaticResource NaviItemTemplate}"
-                    ItemsSource="{Binding Meetings}" />
+                    ItemsSource="{Binding Meetings}" 
+                    Margin="10"/>
             </ScrollViewer>
         </GroupBox>
 
